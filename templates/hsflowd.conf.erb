@@ -1,0 +1,41 @@
+# Managed by puppet, changes will be lost
+
+sflow {  
+  <% if @testing == true -%>
+    collector { ip = 127.0.0.1 }
+  <% elsif  @dns_sd == true -%>
+    DNS-SD { domain = <%= @domain %> }
+  <% else -%>
+    collector { ip = <%= @collector %> }
+  <% end -%>
+
+    sampling.100M = 1024
+    sampling.1G = 1024
+    sampling.10G = 1024
+    sampling.http = 50  # for apache mod-sflow
+  
+    # json { udpPort = 36343 } # add custom metrics via rtmetric,rtflow
+
+  <% if @kvm == true -%>
+    kvm {}  # monitor my VMs via libvirt
+  <% end -%>
+  
+    # docker {}  # monitor my docker containers
+
+   # Sample for nflog firewall config:
+  # MOD_STATISTIC="-m statistic --mode random --probability 0.0025"
+  # NFLOG_CONFIG="--nflog-group 5 --nflog-prefix SFLOW"
+  # -I INPUT -j NFLOG $MOD_STATISTIC $NFLOG_CONFIG
+  # -I OUTPUT -j NFLOG $MOD_STATISTIC $NFLOG_CONFIG
+
+  <% if @nflog == true -%>
+    nflog { group = 5 probability = 0.0025 }
+    tcp { }
+  <% elsif @ovs == true -%> 
+    ovs {}  # share my sFlow config to Open vSwitch (replaces pcap{})
+  <% else -%>
+    pcap { speed=100M- }
+    tcp { }
+  <% end -%>
+  
+}

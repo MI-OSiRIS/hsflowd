@@ -5,15 +5,24 @@ class hsflowd (
 	$kvm = false,
 	$dns_sd = true,
 	$collector = '140.221.249.136',
-	$domain = '.sc16.org' 
+	$domain = '.sc16.org',
+	$ensure = 'present' 
 )
 {
 
-	package { 'hsflowd': ensure => present }
+	if $ensure == 'present' {
+		$running = 'running'
+		$enable = true
+	} else {
+		$running = 'stopped'
+		$enable = false
+	}
+
+	package { 'hsflowd': ensure => $ensure }
 
 	service { 'hsflowd': 
-		ensure => running,
-		enable => true,
+		ensure => $running,
+		enable => $enable,
 		require => [ File['/etc/hsflowd.conf'], Package['hsflowd'] ]
 	}
 
@@ -22,6 +31,7 @@ class hsflowd (
 		owner => "root",
 		group => "root",
 		mode => "0644",
+		ensure => $present,
 		notify => Service['hsflowd'] 
 	}
 }

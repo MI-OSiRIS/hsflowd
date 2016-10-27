@@ -31,6 +31,9 @@ $domain = '.sc16.org'
 
 Domain to configure in DNS-SD config if $dns_sd is true
 
+$ensure = 'present'
+
+If set to 'absent' clean up package, service, and remove config file.  
 
 Sample to use nflog firewall config:
 

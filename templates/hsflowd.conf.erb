@@ -1,6 +1,10 @@
 # Managed by puppet, changes will be lost
 
-sflow {  
+sflow {
+  <% if @agent != undef -%>
+    agent = <%= @agent %>
+  <% end -%>
+
   <% if @testing == true -%>
     collector { ip = 127.0.0.1 }
   <% elsif  @dns_sd == true -%>
@@ -37,5 +41,5 @@ sflow {
     pcap { speed=100M- }
     tcp { }
   <% end -%>
-  
+
 }

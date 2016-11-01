@@ -1,7 +1,7 @@
 # Managed by puppet, changes will be lost
 
 sflow {
-  <% if @agent != undef -%>
+  <% if @agent != false -%>
     agent = <%= @agent %>
   <% end -%>
 

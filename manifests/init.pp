@@ -1,5 +1,5 @@
 class hsflowd (
-        $agent = undef,
+        $agent = false,
 	$nflog = false,
 	$testing = true,
 	$ovs = false,

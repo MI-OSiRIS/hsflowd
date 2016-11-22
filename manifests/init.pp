@@ -31,7 +31,7 @@ class hsflowd (
 		owner => "root",
 		group => "root",
 		mode => "0644",
-		ensure => $present,
+		ensure => $ensure,
 		notify => Service['hsflowd'] 
 	}
 }
